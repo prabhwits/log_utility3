@@ -16,9 +16,10 @@ export enum ERROR_MESSAGE {
 }
 
 export interface IHttpResponse {
+  payload?: any
   message?: string
   report: any
-  reportTimestamp: string
+  reportTimestamp?: string
   bpp_id: string
   bap_id: string
   domain: string

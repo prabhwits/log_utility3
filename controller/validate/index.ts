@@ -72,10 +72,11 @@ const controller = {
       const httpResponse: IHttpResponse = {
         message,
         report: response,
+        // payload,
         bpp_id,
         bap_id,
         domain,
-        reportTimestamp: new Date().toISOString(),
+        // reportTimestamp: new Date().toISOString(),
       }
 
       const { signature, currentDate } = await helper.createSignature({ message: JSON.stringify(httpResponse) })
@@ -102,10 +103,11 @@ const controller = {
       const httpResponse: IHttpResponse = {
         message: response?.message,
         report: response?.report,
+        // payload: response?.payload,
         bpp_id: response?.bpp_id,
         bap_id: response?.bap_id,
         domain: response?.domain,
-        reportTimestamp: response?.reportTimestamp,
+        // reportTimestamp: response?.reportTimestamp,
       }
 
       const hashString = await hash({ message: JSON.stringify(httpResponse) })

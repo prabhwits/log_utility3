@@ -108,7 +108,7 @@ try {
   // Iterate through bpp/providers
   for (let i in onSearchIncrementakCatalog['bpp/providers']) {
     const offers = onSearchIncrementakCatalog['bpp/providers'][i]?.offers ?? null;
-    if (!offers) {
+    if (offers) {
       offers.forEach((offer: any, offerIndex: number) => {
         const tags = offer.tags;
 
