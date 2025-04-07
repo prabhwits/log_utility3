@@ -36,7 +36,6 @@ curl --location --request POST 'https://log-validation.ondc.org/api/validate' \
     "flow":""
 }'
 ```
-
 # Retail Log Validation Utility - Flow Payloads
 
 The table below outlines the payload structure for various transaction flows in the Retail Log Validation Utility. Each flow corresponds to specific actions within the ONDC network, and the payload structure provides a clear representation of the data expected for each action. This comprehensive reference assists developers in constructing accurate and valid JSON payloads for their transactions.
@@ -598,7 +597,6 @@ curl --location 'http://localhost:3008/api/validate' \
     "flow": "6"
 }'
 ```
-
 ### FOR FLOW 7
 
 ```shell
@@ -655,6 +653,7 @@ curl --location 'http://localhost:3008/api/validate' \
 }'
 ```
 
+```
 ### For IGM Sample Curl Request (Local)
 
 ```shell
@@ -721,6 +720,175 @@ curl --location 'https://log-validation.ondc.org/api/validate/fis/fis12' \
 }'
 ```
 
+### For FIS14 Sample Curl Requests (Local)
+
+#### For SEARCH_FULL_PULL Flow
+```shell
+curl --location 'http://localhost:3008/api/validate/fis' \
+--header 'Content-Type: application/json' \
+--data '{
+    "domain": "ONDC:FIS14",
+    "version": "2.0.0",
+    "flow": "SEARCH_FULL_PULL",
+    "bap_id": "BUYER_APP_SUBSCRIBER_ID",
+    "bpp_id": "SELLER_APP_SUBSCRIBER_ID",
+    "payload": {
+        "search": {},
+        "on_search": {}
+    }
+}'
+```
+
+#### For SEARCH_INCREMENT Flow
+```shell
+curl --location 'http://localhost:3008/api/validate/fis' \
+--header 'Content-Type: application/json' \
+--data '{
+    "domain": "ONDC:FIS14",
+    "version": "2.0.0",
+    "flow": "SEARCH_INCREMENT",
+    "bap_id": "BUYER_APP_SUBSCRIBER_ID",
+    "bpp_id": "SELLER_APP_SUBSCRIBER_ID",
+    "payload": {
+        "search": {},
+        "on_search": {}
+    }
+}'
+```
+
+#### For SIP_NEW_FOLIO_WITH_KYC Flow
+```shell
+curl --location 'http://localhost:3008/api/validate/fis' \
+--header 'Content-Type: application/json' \
+--data '{
+    "domain": "ONDC:FIS14",
+    "version": "2.0.0",
+    "flow": "SIP_NEW_FOLIO_WITH_KYC",
+    "bap_id": "BUYER_APP_SUBSCRIBER_ID",
+    "bpp_id": "SELLER_APP_SUBSCRIBER_ID",
+    "payload": {
+        "select": {},
+        "on_select": {},
+        "select_1": {},
+        "on_select_1": {},
+        "select_2": {},
+        "on_select_2": {},
+        "select_3": {},
+        "on_select_3": {},
+        "init": {},
+        "on_init": {},
+        "confirm": {},
+        "on_confirm": {},
+        "on_status": {}
+    }
+}'
+```
+
+#### For SIP_INSTALLEMENT_SUCCESS Flow
+```shell
+curl --location 'http://localhost:3008/api/validate/fis' \
+--header 'Content-Type: application/json' \
+--data '{
+    "domain": "ONDC:FIS14",
+    "version": "2.0.0",
+    "flow": "SIP_INSTALLEMENT_SUCCESS",
+    "bap_id": "BUYER_APP_SUBSCRIBER_ID",
+    "bpp_id": "SELLER_APP_SUBSCRIBER_ID",
+    "payload": {
+        "on_update": {},
+        "on_confirm": {},
+        "on_status": {},
+        "on_update_1": {}
+    }
+}'
+```
+
+#### For SIP_INSTALLEMENT_FAILURE Flow
+```shell
+curl --location 'http://localhost:3008/api/validate/fis' \
+--header 'Content-Type: application/json' \
+--data '{
+    "domain": "ONDC:FIS14",
+    "version": "2.0.0",
+    "flow": "SIP_INSTALLEMENT_FAILURE",
+    "bap_id": "BUYER_APP_SUBSCRIBER_ID",
+    "bpp_id": "SELLER_APP_SUBSCRIBER_ID",
+    "payload": {
+        "on_update": {},
+        "on_confirm": {},
+        "on_update_1": {}
+    }
+}'
+```
+
+#### For LUMPSUM_EXISTING_FOLIO Flow
+```shell
+curl --location 'http://localhost:3008/api/validate/fis' \
+--header 'Content-Type: application/json' \
+--data '{
+    "domain": "ONDC:FIS14",
+    "version": "2.0.0",
+    "flow": "LUMPSUM_EXISTING_FOLIO",
+    "bap_id": "BUYER_APP_SUBSCRIBER_ID",
+    "bpp_id": "SELLER_APP_SUBSCRIBER_ID",
+    "payload": {
+        "select": {},
+        "on_select": {},
+        "init": {},
+        "on_init": {},
+        "confirm": {},
+        "on_confirm": {},
+        "on_status": {},
+        "on_update": {}
+    }
+}'
+```
+
+#### For LUMPSUM_PAYMENT_RETRY Flow
+```shell
+curl --location 'http://localhost:3008/api/validate/fis' \
+--header 'Content-Type: application/json' \
+--data '{
+    "domain": "ONDC:FIS14",
+    "version": "2.0.0",
+    "flow": "LUMPSUM_PAYMENT_RETRY",
+    "bap_id": "BUYER_APP_SUBSCRIBER_ID",
+    "bpp_id": "SELLER_APP_SUBSCRIBER_ID",
+    "payload": {
+        "select": {},
+        "on_select": {},
+        "init": {},
+        "on_init": {},
+        "confirm": {},
+        "on_update": {},
+        "update": {},
+        "on_update_1": {}
+    }
+}'
+```
+
+#### For REDEMPTION Flow
+```shell
+curl --location 'http://localhost:3008/api/validate/fis' \
+--header 'Content-Type: application/json' \
+--data '{
+    "domain": "ONDC:FIS14",
+    "version": "2.0.0",
+    "flow": "REDEMPTION",
+    "bap_id": "BUYER_APP_SUBSCRIBER_ID",
+    "bpp_id": "SELLER_APP_SUBSCRIBER_ID",
+    "payload": {
+        "select": {},
+        "on_select": {},
+        "init": {},
+        "on_init": {},
+        "confirm": {},
+        "on_confirm": {},
+        "on_update": {}
+    }
+}'
+```
+
 ### For TRV10 Sample Curl Request (Local)
 
 ```shell
@@ -750,6 +918,72 @@ curl --location 'https://localhost:3006/api/validate/trv' \
     }
 }'
 ```
+
+### For TRV11 (METRO) Sample Curl Request (Server)
+
+```shell
+curl --location 'https://log-validation.ondc.org/api/validate/trv' \
+--header 'Content-Type: application/json' \
+--data '{
+    "domain": "ONDC:TRV11",
+    "version": "2.0.0",
+    "flow": "METRO_STATION_CODE",
+    "bap_id": "BUYER_APP_SUBSCRIBER_ID",
+    "bpp_id": "SELLER_APP_SUBSCRIBER_ID",
+    "payload": {
+        "search1": {},
+        "on_search1": {},
+        "search2": {},
+        "on_search2": {},
+        "select": {},
+        "on_select": {},
+        "init": {},
+        "on_init": {},
+        "confirm": {},
+        "on_confirm": {},
+        "status": {},
+        "on_status": {},
+        "soft_cancel": {},
+        "soft_on_cancel": {},
+        "confirm_cancel": {},
+        "confirm_on_cancel": {}
+    }
+}'
+```
+
+
+### For TRV11 (INTRACITY-BUS) Sample Curl Request (Server)
+
+```shell
+curl --location 'https://log-validation.ondc.org/api/validate/trv' \
+--header 'Content-Type: application/json' \
+--data '{
+    "domain": "ONDC:TRV11",
+    "version": "2.0.0",
+    "flow": "INTRACITY_STATION_CODE",
+    "bap_id": "BUYER_APP_SUBSCRIBER_ID",
+    "bpp_id": "SELLER_APP_SUBSCRIBER_ID",
+    "payload": {
+        "search1": {},
+        "on_search1": {},
+        "search2": {},
+        "on_search2": {},
+        "select": {},
+        "on_select": {},
+        "init": {},
+        "on_init": {},
+        "confirm": {},
+        "on_confirm": {},
+        "status": {},
+        "on_status": {},
+        "soft_cancel": {},
+        "soft_on_cancel": {},
+        "confirm_cancel": {},
+        "confirm_on_cancel": {}
+    }
+}'
+```
+
 
 ### For RSF V2 Sample Curl Request (Local)
 
