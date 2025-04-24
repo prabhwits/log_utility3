@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { logger } from '../shared/logger'
 import constants, { ApiSequence, statusArray } from '../constants'
 import schemaValidator from '../shared/schemaValidator'
+import schemaValidatorV2 from '../shared/schemaValidatorV2'
 import data from '../constants/AreacodeMap.json'
 import { reasonCodes } from '../constants/reasonCode'
 import { InputObject } from '../shared/interface'
@@ -218,12 +219,41 @@ const validate_schema_for_retail_json = (vertical: string, api: string, data: an
   return res
 }
 
+const validate_schema_for_retail_json_v2 = (vertical: string, api: string, data: any) => {
+  console.log(`+++++++++ validate_schema_${api}_${vertical}_for_json`)
+  const res = (schemaValidatorV2 as any)[`validate_schema_${api}_${vertical}_for_json`](data)
+  return res
+}
+
 export const validateSchema = (domain: string, api: string, data: any) => {
   try {
     logger.info(`Inside Schema Validation for domain: ${domain}, api: ${api}`)
     const errObj: any = {}
 
     const schmaVldtr = validate_schema_for_retail_json(domain, api, data)
+    const datavld = schmaVldtr
+    if (datavld.status === 'fail') {
+      const res = datavld.errors
+      let i = 0
+      const len = res.length
+      while (i < len) {
+        const key = `schemaErr${i}`
+        errObj[key] = `${res[i].details} ${res[i].message}`
+        i++
+      }
+
+      return errObj
+    } else return 'error'
+  } catch (e: any) {
+    logger.error(`Some error occured while validating schema, ${e.stack}`)
+  }
+}
+export const validateSchemaRetailV2 = (domain: string, api: string, data: any) => {
+  try {
+    logger.info(`Inside Schema Validation for domain: ${domain}, api: ${api}`)
+    const errObj: any = {}
+
+    const schmaVldtr = validate_schema_for_retail_json_v2(domain, api, data)
     const datavld = schmaVldtr
     if (datavld.status === 'fail') {
       const res = datavld.errors
@@ -1101,7 +1131,7 @@ export const checkQuoteTrail = (quoteTrailItems: any[], errorObj: any, selectPri
   }
 }
 
-function deepCompare(obj1: any, obj2: any): boolean {
+export function deepCompare(obj1: any, obj2: any): boolean {
   if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
     return obj1 === obj2
   }
@@ -1352,3 +1382,62 @@ export function validateBppUri(bppUri: string, bpp_id: string, errorObj: any): a
     errorObj['bpp_id_in_uri'] = `Bpp_id ${bpp_id} is not found in BppUri ${bppUri}`
   }
 }
+export interface TagListItem {
+  code: string;
+  value: string;
+}
+
+export interface Tag {
+  code: string;
+  list: TagListItem[];
+}
+
+export interface Fulfillment {
+  id: string;
+  tags?: Tag[];
+  [key: string]: any; 
+}
+
+
+export function compareAllObjects(
+  obj1: Record<string, any>,
+  obj2: Record<string, any>
+): {
+  isEqual: boolean;
+  isObj1InObj2: boolean;
+  isObj2InObj1: boolean;
+  isContained: boolean;
+} {
+  const isEqual = JSON.stringify(obj1) === JSON.stringify(obj2);
+
+  const isSubset = (subset: Record<string, any>, superset: Record<string, any>): boolean => {
+    return Object.entries(subset).every(([key, value]) => {
+      const superValue = superset?.[key];
+
+      if (typeof value === 'object' && value !== null) {
+        if (Array.isArray(value)) {
+          if (!Array.isArray(superValue)) return false;
+          return value.every((val, idx) =>
+            compareAllObjects(val, superValue[idx]).isObj1InObj2
+          );
+        } else {
+          return compareAllObjects(value, superValue).isObj1InObj2;
+        }
+      }
+
+      return superset?.hasOwnProperty(key) && superValue === value;
+    });
+  };
+
+  const isObj1InObj2 = isSubset(obj1, obj2);
+  const isObj2InObj1 = isSubset(obj2, obj1);
+
+  return {
+    isEqual,
+    isObj1InObj2,
+    isObj2InObj1,
+    isContained: isObj1InObj2 || isObj2InObj1
+  };
+}
+
+
